@@ -75,7 +75,7 @@ input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; border-radius
 .option-row { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 14px; flex-wrap: wrap; }
 .option { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: .9rem; }
 .option select { background: var(--panel-2); color: var(--text); border: 1px solid #2c3546; border-radius: 8px; padding: 6px 8px; }
-.option input[type="range"] { width: 150px; }
+.option input[type="range"] { width: 600px; }
 .kbd-hint { margin-top: 12px; text-align: center; color: var(--muted); font-size: .75rem; }
 kbd { background: #2b3444; padding: 1px 6px; border-radius: 4px; font-family: inherit; }
 .playlist-section { margin-top: 12px; background: var(--panel); border-radius: var(--radius); padding: 14px; }
@@ -113,7 +113,7 @@ kbd { background: #2b3444; padding: 1px 6px; border-radius: 4px; font-family: in
 <label class="btn primary" for="file-input">🎵 ファイルを選択（複数可）</label>
 <input type="file" id="file-input" multiple hidden
 accept="audio/mpeg,.mp3">
-<label class="btn" for="folder-input">📁 フォルダを選択</label>
+<button id="folder-btn" class="btn" type="button">📁 音源フォルダを設定</button>
 <input type="file" id="folder-input" webkitdirectory directory multiple hidden>
 <button id="clear-btn" class="btn danger" type="button">🗑 すべてクリア</button>
 </div>
@@ -161,6 +161,7 @@ var $ = function (id) { return document.getElementById(id); };
 var audio = $('audio');
 var fileInput = $('file-input');
 var folderInput = $('folder-input');
+  var folderBtn = $('folder-btn');
 var dropZone = $('drop-zone');
 var clearBtn = $('clear-btn');
 var statusEl = $('status');
@@ -521,7 +522,7 @@ ctx2d.lineTo(x + barW, H); ctx2d.closePath(); ctx2d.fill();
 }
 }
 requestAnimationFrame(drawSpectrum);
-setVolume(80); setLoopMode('off'); renderPlaylist(); updatePlayButton();
+setVolume(80); setLoopMode('off'); renderPlaylist(); updatePlayButton(); autoLoadFolder();
 })();
 </script>
 </body>
