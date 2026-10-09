@@ -76,13 +76,47 @@
 
   .metronome { margin-top: 12px; background: var(--panel); border-radius: var(--radius); padding: 18px 16px;
     border: 2px solid #2f3b52; box-shadow: 0 0 0 1px rgba(79,209,197,.08); }
-  .metronome-header { color: var(--text); font-size: 1.1rem; font-weight: 700; margin-bottom: 14px; text-align: center; letter-spacing: .02em; }
+  .metronome-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+  .metronome-header { color: var(--text); font-size: 1.1rem; font-weight: 700; letter-spacing: .02em; }
+  #metro-settings-toggle { padding: 6px 12px; font-size: .85rem; }
   .metronome-row { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 12px; }
   .metronome-row .option { gap: 6px; }
   .time-sep { color: var(--muted); }
   #beats-select, #note-value-select, #advance-mode-select { background: var(--panel-2); color: var(--text); border: 1px solid #2c3546; border-radius: 8px; padding: 6px 6px; }
+  .metronome select:disabled, .metronome input:disabled { opacity: .45; cursor: not-allowed; }
+
+  .program-status { text-align: center; color: var(--accent); font-size: 1rem; min-height: 1.4em; margin: 4px 0; font-weight: 600; }
+  .beat-dots { display: flex; justify-content: center; gap: 12px; margin: 10px 0 16px; flex-wrap: wrap; }
+  .beat-dot { width: 22px; height: 22px; border-radius: 50%; background: #2b3444; transition: background .04s, transform .06s, box-shadow .08s; }
+  .beat-dot.accent { box-shadow: 0 0 0 2px #4a5570 inset; }
+  .beat-dot.on { background: var(--accent-2); transform: scale(1.4); box-shadow: 0 0 14px 2px rgba(127,156,245,.8); }
+  .beat-dot.accent.on { background: var(--accent); box-shadow: 0 0 20px 4px rgba(79,209,197,.9); }
+  /* "1拍目だけ違う音" がオフのときは1拍目も他と同じ見た目にする */
+  .beat-dots.no-accent .beat-dot.accent { box-shadow: none; }
+  .beat-dots.no-accent .beat-dot.accent.on { background: var(--accent-2); box-shadow: 0 0 14px 2px rgba(127,156,245,.8); }
+
+  .metro-controls { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin: 6px 0 4px; }
+  .btn.metro-main, .btn.metro-stop, .btn.metro-next { height: 58px; justify-content: center; border-radius: 14px; }
+  .btn.metro-main { min-width: 180px; font-size: 1.15rem; letter-spacing: .04em; }
+  .btn.metro-stop { min-width: 112px; font-size: 1.05rem; }
+  .btn.metro-next { padding: 0 18px; }
+  /* 再生中は「一時停止」ボタンとして、塗りつぶしではなく枠線スタイルで表示 */
+  .btn.metro-main.running { background: var(--panel-2); color: var(--accent); border: 2px solid var(--accent); }
+
+  .metro-settings { margin-top: 20px; padding-top: 16px; border-top: 1px solid #2c3546; }
+  .settings-group + .settings-group { margin-top: 18px; padding-top: 16px; border-top: 1px dashed #2c3546; }
+  .settings-title { color: var(--text); font-size: .95rem; font-weight: 600; margin-bottom: 12px; text-align: center; }
+  .lock-note { background: rgba(245,101,101,.1); border: 1px solid rgba(245,101,101,.35); color: #f5a3a3; border-radius: 8px;
+    padding: 8px 10px; font-size: .82rem; margin-bottom: 12px; text-align: center; line-height: 1.5; }
+  .sound-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px 22px; margin-bottom: 14px; }
+  .sound-grid .option { justify-content: space-between; }
+  .sound-grid .option input[type="range"] { flex: 1; width: auto; min-width: 80px; }
+  .sound-grid .option .time { min-width: 56px; }
+  .check { display: inline-flex; align-items: center; gap: 8px; color: var(--text); font-size: .92rem; cursor: pointer; }
+  .check input { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; }
+
   .program-label { text-align: center; color: var(--muted); font-size: .78rem; margin: 2px 0 10px; line-height: 1.5; }
-  .program-steps { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; margin-bottom: 14px; }
+  .program-steps { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; margin-bottom: 4px; }
   .program-step { display: flex; align-items: center; gap: 6px; background: var(--panel-2); border: 1px solid #2c3546; border-radius: 8px; padding: 7px 10px; transition: border-color .15s; }
   .program-step:focus-within { border-color: var(--accent); }
   .program-step .step-num { color: var(--muted); font-size: .8rem; min-width: 16px; }
@@ -92,15 +126,6 @@
   .step-sec { width: 38px; background: transparent; color: var(--text); border: none; border-bottom: 1px solid #3a4558; text-align: center; padding: 2px 0; }
   .step-sec-unit { color: var(--muted); font-size: .75rem; }
   .program-steps.click-mode .step-sec-wrap { display: none; }
-  .program-status { text-align: center; color: var(--accent); font-size: .95rem; min-height: 1.3em; margin-bottom: 4px; font-weight: 600; }
-  .metronome .button-row { margin-top: 4px; }
-  .metronome .icon-btn.big { width: 70px; height: 70px; font-size: 1.6rem; }
-  #metro-play-btn:not(:disabled):hover { filter: brightness(1.1); }
-  .beat-dots { display: flex; justify-content: center; gap: 12px; margin: 10px 0 16px; flex-wrap: wrap; }
-  .beat-dot { width: 22px; height: 22px; border-radius: 50%; background: #2b3444; transition: background .04s, transform .06s, box-shadow .08s; }
-  .beat-dot.accent { box-shadow: 0 0 0 2px #4a5570 inset; }
-  .beat-dot.on { background: var(--accent-2); transform: scale(1.4); box-shadow: 0 0 14px 2px rgba(127,156,245,.8); }
-  .beat-dot.accent.on { background: var(--accent); box-shadow: 0 0 20px 4px rgba(79,209,197,.9); }
 
   .playlist-section { margin-top: 12px; background: var(--panel); border-radius: var(--radius); padding: 14px; }
   .playlist-header { display: flex; align-items: center; justify-content: space-between; color: var(--muted); font-size: .9rem; margin-bottom: 8px; }
@@ -152,50 +177,89 @@
   </section>
 
   <section class="metronome" aria-label="メトロノーム">
-    <div class="metronome-header">🎼 メトロノーム</div>
-
-    <div class="metronome-row">
-      <label class="option">拍子
-        <select id="beats-select" aria-label="1小節の拍数">
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4" selected>4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="12">12</option>
-        </select>
-        <span class="time-sep">/</span>
-        <select id="note-value-select" aria-label="何分音符を1拍とするか">
-          <option value="2">2</option>
-          <option value="4" selected>4</option>
-          <option value="8">8</option>
-          <option value="16">16</option>
-        </select>
-      </label>
-      <label class="option">切替方法
-        <select id="advance-mode-select" aria-label="プログラムの切替方法">
-          <option value="time">時間で切替</option>
-          <option value="click">クリックで切替</option>
-        </select>
-      </label>
-      <button id="next-tempo-btn" class="btn" type="button" hidden>次のテンポへ ⏭</button>
-      <button id="tap-tempo-btn" class="btn" type="button" title="連続でタップしてテンポを計測">👆 タップでテンポ</button>
+    <div class="metronome-top">
+      <div class="metronome-header">🎼 メトロノーム</div>
+      <button id="metro-settings-toggle" class="btn" type="button" aria-expanded="false" aria-controls="metro-settings">⚙ 設定を表示</button>
     </div>
-
-    <div class="program-label">テンポ・プログラム（最大10ステップ。空欄はスキップ、1つだけならそのまま停止するまでループ。10番目の次は1番目に戻ります）</div>
-    <div id="program-steps" class="program-steps"></div>
 
     <div id="program-status" class="program-status"></div>
     <div id="beat-dots" class="beat-dots" aria-hidden="true"></div>
 
-    <div class="button-row">
-      <button id="metro-play-btn" class="btn icon-btn big primary" type="button" title="再生">▶</button>
-      <button id="metro-pause-btn" class="btn icon-btn big" type="button" title="一時停止" disabled>⏸</button>
-      <button id="metro-stop-btn" class="btn icon-btn big danger" type="button" title="停止" disabled>⏹</button>
+    <div class="metro-controls">
+      <button id="metro-main-btn" class="btn primary metro-main" type="button" title="メトロノームを開始">▶ START</button>
+      <button id="metro-stop-btn" class="btn danger metro-stop" type="button" title="停止" disabled>⏹ 停止</button>
+      <button id="next-tempo-btn" class="btn metro-next" type="button" hidden disabled>次のテンポへ ⏭</button>
+    </div>
+
+    <div id="metro-settings" class="metro-settings" hidden>
+      <div class="settings-group">
+        <div class="settings-title">テンポ</div>
+        <div id="tempo-lock-note" class="lock-note" hidden>🔒 再生中・一時停止中はテンポの設定を変更できません。変更するには「停止」してください。</div>
+
+        <div class="metronome-row">
+          <label class="option">拍子
+            <select id="beats-select" aria-label="1小節の拍数">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4" selected>4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="12">12</option>
+            </select>
+            <span class="time-sep">/</span>
+            <select id="note-value-select" aria-label="何分音符を1拍とするか">
+              <option value="2">2</option>
+              <option value="4" selected>4</option>
+              <option value="8">8</option>
+              <option value="16">16</option>
+            </select>
+          </label>
+          <label class="option">切替方法
+            <select id="advance-mode-select" aria-label="プログラムの切替方法">
+              <option value="time">時間で切替</option>
+              <option value="click">クリックで切替</option>
+            </select>
+          </label>
+          <button id="tap-tempo-btn" class="btn" type="button" title="連続でタップしてテンポを計測">👆 タップでテンポ</button>
+        </div>
+
+        <div class="program-label">テンポ・プログラム（最大10ステップ。空欄はスキップ、1つだけならそのまま停止するまでループ。10番目の次は1番目に戻ります）</div>
+        <div id="program-steps" class="program-steps"></div>
+      </div>
+
+      <div class="settings-group">
+        <div class="settings-title">音</div>
+        <div class="sound-grid">
+          <label class="option">音色
+            <select id="sound-type" aria-label="メトロノームの音色">
+              <option value="wood" selected>ウッドブロック</option>
+              <option value="beep">ビープ</option>
+              <option value="click">クリック</option>
+              <option value="hat">ハイハット</option>
+            </select>
+          </label>
+          <label class="option">音量
+            <input type="range" id="sound-volume" min="0" max="100" step="1" value="80" aria-label="メトロノームの音量">
+            <span id="sound-volume-value" class="time">80%</span>
+          </label>
+          <label class="option">高さ
+            <input type="range" id="sound-pitch" min="-12" max="12" step="1" value="0" aria-label="メトロノームの音の高さ（半音単位）">
+            <span id="sound-pitch-value" class="time">±0</span>
+          </label>
+          <label class="option">長さ
+            <input type="range" id="sound-decay" min="50" max="200" step="5" value="100" aria-label="メトロノームの音の長さ">
+            <span id="sound-decay-value" class="time">100%</span>
+          </label>
+        </div>
+        <div class="metronome-row">
+          <label class="check"><input type="checkbox" id="sound-accent" checked> 1拍目だけ違う音にする</label>
+          <button id="sound-test-btn" class="btn" type="button">🔊 試し聴き</button>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -240,7 +304,7 @@
 </main>
 
 <!-- TODO: replace this href with the actual destination URL -->
-<a id="download-audio-btn" class="download-fab" href="https://img.skin/400x300?text=%E4%B8%80%E6%99%82%E7%9A%84%E3%81%AB%E3%81%94%E5%88%A9%E7%94%A8%E3%81%A7%E3%81%8D%E3%81%BE%E3%81%9B%E3%82%93%E3%80%82" target="_blank" rel="noopener noreferrer">⬇ 音源をダウンロード</a>
+<a id="download-audio-btn" class="download-fab" href="https://example.com/" target="_blank" rel="noopener noreferrer">⬇ 音源をダウンロード</a>
 
 <audio id="audio" preload="metadata"></audio>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -278,9 +342,20 @@
   var programStepsEl = $('program-steps');
   var nextTempoBtn = $('next-tempo-btn');
   var programStatusEl = $('program-status');
-  var metroPlayBtn = $('metro-play-btn');
-  var metroPauseBtn = $('metro-pause-btn');
+  var metroMainBtn = $('metro-main-btn');
   var metroStopBtn = $('metro-stop-btn');
+  var settingsToggleBtn = $('metro-settings-toggle');
+  var settingsPanel = $('metro-settings');
+  var tempoLockNote = $('tempo-lock-note');
+  var soundTypeSelect = $('sound-type');
+  var soundVolumeInput = $('sound-volume');
+  var soundVolumeValue = $('sound-volume-value');
+  var soundPitchInput = $('sound-pitch');
+  var soundPitchValue = $('sound-pitch-value');
+  var soundDecayInput = $('sound-decay');
+  var soundDecayValue = $('sound-decay-value');
+  var soundAccentInput = $('sound-accent');
+  var soundTestBtn = $('sound-test-btn');
   var beatDotsEl = $('beat-dots');
   var tracks = [];
   var currentIndex = -1;
@@ -631,13 +706,16 @@
   });
 
   // --- Metronome -----------------------------------------------------
-  // "Program" metronome: one or more tempos entered up front (comma-separated).
-  // A single value just runs forever at that tempo until Stop. Several values
-  // cycle through in order, switching either after a fixed duration or on a
-  // manual button click, chosen via advance-mode-select.
+  // "Program" metronome: up to 10 tempo steps entered up front. A single step just
+  // runs forever at that tempo until Stop. Several steps cycle in order (10 → 1),
+  // switching either after each step's own duration or on a manual button click.
+  // Settings live in a collapsible panel; the tempo section is locked while the
+  // metronome is running or paused, the sound section can always be adjusted.
   var metroCtx = null;
-  var metroRunning = false;          // scheduler actively posting clicks
-  var metroPaused = false;           // temporarily halted, state preserved
+  var metroMaster = null;            // master volume → compressor → speakers
+  var metroNoiseBuf = null;          // shared white-noise buffer for click transients
+  var metroBus = null;               // per-run output node, muted instantly on pause / stop
+  var metroState = 'stopped';        // 'stopped' | 'running' | 'paused'
   var metroTimerId = null;           // lookahead scheduler timer
   var metroStepTimerId = null;       // time-based program-advance timer
   var metroNextTime = 0;
@@ -700,26 +778,135 @@
       beatDotsEl.appendChild(d);
     }
   }
-  beatsSelect.addEventListener('change', renderBeatDots);
-  renderBeatDots();
 
   function updateAdvanceModeUI() {
     // Per-step duration only matters in "time" mode; in "click" mode advancing is
-    // manual, so the duration fields are hidden rather than just inert.
+    // manual, so the duration fields are hidden and the "next tempo" button shown.
     var mode = advanceModeSelect.value;
     programStepsEl.classList.toggle('click-mode', mode === 'click');
     nextTempoBtn.hidden = mode !== 'click';
   }
-  advanceModeSelect.addEventListener('change', updateAdvanceModeUI);
-  updateAdvanceModeUI();
 
+  // The line under the header doubles as a summary while stopped, so the person
+  // can see what will play without opening the (hidden by default) settings.
   function updateProgramStatus() {
-    var step = metroSteps[metroStepIndex] || { bpm: 120 };
-    if (metroSteps.length > 1) {
-      programStatusEl.textContent = step.bpm + ' BPM （ステップ ' + (metroStepIndex + 1) + ' / ' + metroSteps.length + '）';
+    var text;
+    if (metroState === 'stopped') {
+      var prog = parseProgram();
+      var sig = (beatsSelect.value || 4) + '/' + (noteValueSelect.value || 4) + '拍子';
+      if (prog.length === 1) {
+        text = sig + ' ・ ' + prog[0].bpm + ' BPM';
+      } else {
+        text = sig + ' ・ ' + prog.map(function (s) { return s.bpm; }).join(' → ') + ' BPM（' + prog.length + 'ステップ）';
+      }
     } else {
-      programStatusEl.textContent = step.bpm + ' BPM';
+      var step = metroSteps[metroStepIndex] || { bpm: 120 };
+      text = step.bpm + ' BPM';
+      if (metroSteps.length > 1) text += '（ステップ ' + (metroStepIndex + 1) + ' / ' + metroSteps.length + '）';
+      if (metroState === 'paused') text += ' ・ 一時停止中';
     }
+    if (programStatusEl.textContent !== text) programStatusEl.textContent = text;
+  }
+
+  // --- Sound -----------------------------------------------------------
+  var soundCfg = { type: 'wood', volume: 0.8, pitch: 1, decay: 1, accent: true };
+
+  function applySoundVolume() {
+    if (!metroMaster) return;
+    // Slight curve so the slider feels even; the compressor downstream prevents clipping.
+    var g = Math.pow(soundCfg.volume, 1.5) * 1.1;
+    metroMaster.gain.setTargetAtTime(g, metroCtx.currentTime, 0.01);
+  }
+  function readSoundCfg() {
+    soundCfg.type = soundTypeSelect.value;
+    soundCfg.volume = (parseFloat(soundVolumeInput.value) || 0) / 100;
+    var semi = parseInt(soundPitchInput.value, 10) || 0;
+    soundCfg.pitch = Math.pow(2, semi / 12);
+    soundCfg.decay = (parseFloat(soundDecayInput.value) || 100) / 100;
+    soundCfg.accent = soundAccentInput.checked;
+    soundVolumeValue.textContent = Math.round(soundCfg.volume * 100) + '%';
+    soundPitchValue.textContent = semi === 0 ? '±0' : (semi > 0 ? '+' + semi : String(semi)) + ' 半音';
+    soundDecayValue.textContent = Math.round(soundCfg.decay * 100) + '%';
+    beatDotsEl.classList.toggle('no-accent', !soundCfg.accent);
+    applySoundVolume();
+  }
+
+  function ensureMetroCtx() {
+    if (!metroCtx) {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) { setStatus('このブラウザはメトロノームに対応していません'); return false; }
+      metroCtx = new AC();
+      metroMaster = metroCtx.createGain();
+      var comp = metroCtx.createDynamicsCompressor();
+      comp.threshold.value = -10; comp.knee.value = 8; comp.ratio.value = 8;
+      comp.attack.value = 0.001; comp.release.value = 0.06;
+      metroMaster.connect(comp); comp.connect(metroCtx.destination);
+      var len = Math.floor(metroCtx.sampleRate * 0.5);
+      metroNoiseBuf = metroCtx.createBuffer(1, len, metroCtx.sampleRate);
+      var ch = metroNoiseBuf.getChannelData(0);
+      for (var i = 0; i < len; i++) ch[i] = Math.random() * 2 - 1;
+      metroMaster.gain.value = Math.pow(soundCfg.volume, 1.5) * 1.1;
+    }
+    if (metroCtx.state === 'suspended') metroCtx.resume().catch(function () {});
+    return true;
+  }
+
+  // Building blocks: a sine "body" and a filtered-noise "transient", each with a
+  // 1 ms attack (no pops) and an exponential decay. No harsh square waves.
+  function envTone(dest, t, freq, type, peak, decay) {
+    var o = metroCtx.createOscillator(), g = metroCtx.createGain();
+    o.type = type; o.frequency.value = Math.min(freq, 20000);
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(peak, t + 0.001);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.001 + decay);
+    o.connect(g); g.connect(dest);
+    o.start(t); o.stop(t + 0.001 + decay + 0.05);
+  }
+  function envNoise(dest, t, filterType, freq, q, peak, decay) {
+    var s = metroCtx.createBufferSource(), f = metroCtx.createBiquadFilter(), g = metroCtx.createGain();
+    s.buffer = metroNoiseBuf;
+    f.type = filterType; f.frequency.value = Math.min(freq, 20000); f.Q.value = q;
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(peak, t + 0.001);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.001 + decay);
+    s.connect(f); f.connect(g); g.connect(dest);
+    s.start(t, Math.random() * 0.3); s.stop(t + 0.001 + decay + 0.05);
+  }
+  function playClick(t, isAccent, dest) {
+    var p = soundCfg.pitch, d = soundCfg.decay, a = isAccent;
+    var level = a ? 1.0 : 0.72;
+    if (soundCfg.type === 'beep') {
+      var fb = (a ? 1320 : 880) * p;
+      envTone(dest, t, fb, 'sine', level * 0.9, 0.075 * d);
+      envTone(dest, t, fb * 2, 'sine', level * 0.18, 0.04 * d);
+    } else if (soundCfg.type === 'click') {
+      envNoise(dest, t, 'bandpass', (a ? 3800 : 2800) * p, 1.1, level, 0.018 * d);
+      envTone(dest, t, (a ? 2200 : 1500) * p, 'sine', level * 0.6, 0.025 * d);
+    } else if (soundCfg.type === 'hat') {
+      var hd = (a ? 0.07 : 0.035) * d;
+      envNoise(dest, t, 'highpass', 6500 * p, 0.7, level * 0.9, hd);
+      envNoise(dest, t, 'bandpass', 10000 * p, 2, level * 0.3, hd);
+    } else {
+      // Wood block: a solid fundamental, an inharmonic overtone and a tiny "knock".
+      var fw = (a ? 1500 : 1000) * p;
+      envTone(dest, t, fw, 'sine', level * 0.85, 0.09 * d);
+      envTone(dest, t, fw * 2.42, 'sine', level * 0.3, 0.04 * d);
+      envNoise(dest, t, 'bandpass', fw * 2.2, 1.5, level * 0.35, 0.012 * d);
+    }
+  }
+
+  function openBus() {
+    metroBus = metroCtx.createGain();
+    metroBus.connect(metroMaster);
+  }
+  // Mute the run bus right away so clicks already queued ahead of time don't
+  // sound after the person pressed pause / stop.
+  function closeBus() {
+    if (!metroBus) return;
+    var b = metroBus; metroBus = null;
+    b.gain.cancelScheduledValues(metroCtx.currentTime);
+    b.gain.setTargetAtTime(0, metroCtx.currentTime, 0.005);
+    setTimeout(function () { try { b.disconnect(); } catch (e) {} }, 150);
   }
 
   function flashBeat(i) {
@@ -727,27 +914,15 @@
     for (var k = 0; k < dots.length; k++) dots[k].classList.remove('on');
     if (dots[i]) dots[i].classList.add('on');
   }
+  function clearBeatFlash() {
+    var dots = beatDotsEl.children;
+    for (var k = 0; k < dots.length; k++) dots[k].classList.remove('on');
+  }
   function scheduleClick(beatIndex, time) {
-    // Beat 1 (the downbeat) gets a higher-pitched, punchier click than the rest.
-    // Extra emphasis: a quick downward pitch sweep gives each click a sharp, percussive "tock".
-    var isDownbeat = beatIndex === 0;
-    var osc = metroCtx.createOscillator();
-    var gain = metroCtx.createGain();
-    osc.type = 'square';
-    var f0 = isDownbeat ? 2200 : 1400;
-    var f1 = isDownbeat ? 900 : 650;
-    osc.frequency.setValueAtTime(f0, time);
-    osc.frequency.exponentialRampToValueAtTime(f1, time + (isDownbeat ? 0.05 : 0.03));
-    osc.connect(gain); gain.connect(metroCtx.destination);
-    var peak = isDownbeat ? 1.0 : 0.72;
-    var dur = isDownbeat ? 0.11 : 0.065;
-    gain.gain.setValueAtTime(0.0001, time);
-    gain.gain.exponentialRampToValueAtTime(peak, time + 0.002);
-    gain.gain.exponentialRampToValueAtTime(0.0001, time + dur);
-    osc.start(time);
-    osc.stop(time + dur + 0.02);
+    var isAccent = soundCfg.accent && beatIndex === 0;   // beat 1 differs only if enabled
+    playClick(time, isAccent, metroBus);
     var delayMs = Math.max(0, (time - metroCtx.currentTime) * 1000);
-    setTimeout(function () { flashBeat(beatIndex); }, delayMs);
+    setTimeout(function () { if (metroState === 'running') flashBeat(beatIndex); }, delayMs);
   }
   function metroScheduler() {
     var beatsPerMeasure = parseInt(beatsSelect.value, 10) || 4;
@@ -759,7 +934,6 @@
       metroNextTime += secPerBeat;
       metroBeatIndex = (metroBeatIndex + 1) % beatsPerMeasure;
     }
-    updateProgramStatus();
     metroTimerId = setTimeout(metroScheduler, METRO_LOOKAHEAD_MS);
   }
   function advanceStep() {
@@ -779,64 +953,88 @@
       scheduleStepAdvance();
     }, sec * 1000);
   }
-  nextTempoBtn.addEventListener('click', advanceStep);
 
-  function setMetroButtons(state) {
-    // state: 'stopped' | 'running' | 'paused'
-    metroPlayBtn.disabled = state === 'running';
-    metroPlayBtn.textContent = state === 'paused' ? '▶' : '▶';
-    metroPlayBtn.title = state === 'paused' ? '再開' : '再生';
-    metroPauseBtn.disabled = state !== 'running';
+  // --- State / UI ------------------------------------------------------
+  function setTempoLocked(locked) {
+    beatsSelect.disabled = locked;
+    noteValueSelect.disabled = locked;
+    advanceModeSelect.disabled = locked;
+    var inputs = programStepsEl.querySelectorAll('input');
+    for (var i = 0; i < inputs.length; i++) inputs[i].disabled = locked;
+    tempoLockNote.hidden = !locked;
+    tapTempoBtn.hidden = locked;
+  }
+  function setMetroState(state) {
+    metroState = state;
+    metroMainBtn.classList.toggle('running', state === 'running');
+    if (state === 'running') { metroMainBtn.textContent = '⏸ 一時停止'; metroMainBtn.title = '一時停止'; }
+    else if (state === 'paused') { metroMainBtn.textContent = '▶ 再開'; metroMainBtn.title = '再開'; }
+    else { metroMainBtn.textContent = '▶ START'; metroMainBtn.title = 'メトロノームを開始'; }
     metroStopBtn.disabled = state === 'stopped';
-    metroPlayBtn.classList.toggle('active', state === 'running');
+    nextTempoBtn.disabled = state !== 'running';
+    setTempoLocked(state !== 'stopped');
+    updateProgramStatus();
   }
   function startMetronome() {
-    if (metroRunning) return;
-    if (!metroCtx) {
-      var AC = window.AudioContext || window.webkitAudioContext;
-      if (!AC) { setStatus('このブラウザはメトロノームに対応していません'); return; }
-      metroCtx = new AC();
-    }
-    if (metroCtx.state === 'suspended') metroCtx.resume().catch(function () {});
-    if (!metroPaused) {
-      // Fresh start (not resuming from pause): (re)read the tempo program.
+    if (metroState === 'running') return;
+    if (!ensureMetroCtx()) return;
+    if (metroState === 'stopped') {
+      // Fresh start (not resuming from pause): read the tempo program.
       metroSteps = parseProgram();
       metroStepIndex = 0;
       metroBeatIndex = 0;
     }
-    metroPaused = false;
-    metroRunning = true;
+    openBus();
     metroNextTime = metroCtx.currentTime + 0.05;
+    setMetroState('running');
     metroScheduler();
     scheduleStepAdvance();
-    setMetroButtons('running');
-    tapTempoBtn.hidden = true;
   }
   function pauseMetronome() {
-    if (!metroRunning) return;
-    metroRunning = false;
-    metroPaused = true;
+    if (metroState !== 'running') return;
     if (metroTimerId) { clearTimeout(metroTimerId); metroTimerId = null; }
     if (metroStepTimerId) { clearTimeout(metroStepTimerId); metroStepTimerId = null; }
-    setMetroButtons('paused');
+    closeBus();
+    clearBeatFlash();
+    setMetroState('paused');
   }
   function stopMetronome() {
-    metroRunning = false;
-    metroPaused = false;
     if (metroTimerId) { clearTimeout(metroTimerId); metroTimerId = null; }
     if (metroStepTimerId) { clearTimeout(metroStepTimerId); metroStepTimerId = null; }
+    if (metroCtx) closeBus();
     metroStepIndex = 0;
     metroBeatIndex = 0;
-    programStatusEl.textContent = '';
-    var dots = beatDotsEl.children;
-    for (var k = 0; k < dots.length; k++) dots[k].classList.remove('on');
-    setMetroButtons('stopped');
-    tapTempoBtn.hidden = false;
+    clearBeatFlash();
+    setMetroState('stopped');
   }
-  metroPlayBtn.addEventListener('click', startMetronome);
-  metroPauseBtn.addEventListener('click', pauseMetronome);
+
+  metroMainBtn.addEventListener('click', function () {
+    if (metroState === 'running') pauseMetronome(); else startMetronome();
+  });
   metroStopBtn.addEventListener('click', stopMetronome);
-  setMetroButtons('stopped');
+  nextTempoBtn.addEventListener('click', advanceStep);
+
+  settingsToggleBtn.addEventListener('click', function () {
+    var willOpen = settingsPanel.hidden;
+    settingsPanel.hidden = !willOpen;
+    settingsToggleBtn.setAttribute('aria-expanded', String(willOpen));
+    settingsToggleBtn.textContent = willOpen ? '⚙ 設定を隠す' : '⚙ 設定を表示';
+  });
+
+  beatsSelect.addEventListener('change', function () { renderBeatDots(); updateProgramStatus(); });
+  noteValueSelect.addEventListener('change', updateProgramStatus);
+  advanceModeSelect.addEventListener('change', updateAdvanceModeUI);
+  programStepsEl.addEventListener('input', updateProgramStatus);
+
+  [soundTypeSelect, soundVolumeInput, soundPitchInput, soundDecayInput, soundAccentInput].forEach(function (el) {
+    el.addEventListener('input', readSoundCfg);
+    el.addEventListener('change', readSoundCfg);
+  });
+  soundTestBtn.addEventListener('click', function () {
+    if (!ensureMetroCtx()) return;
+    var t = metroCtx.currentTime + 0.03;
+    for (var i = 0; i < 3; i++) playClick(t + i * 0.4, soundCfg.accent && i === 0, metroMaster);
+  });
 
   // Tap tempo: tap the button a few times in rhythm; the average interval becomes the tempo.
   var tapTimes = [];
@@ -852,11 +1050,17 @@
       var bpm = clampBpm(60000 / avg);
       var step1 = $('step-bpm-1');
       if (step1) step1.value = String(bpm);
+      updateProgramStatus();
       setStatus('タップテンポ: ' + bpm + ' BPM');
     } else {
       setStatus('タップテンポ: もう一度タップしてください');
     }
   });
+
+  renderBeatDots();
+  updateAdvanceModeUI();
+  readSoundCfg();
+  setMetroState('stopped');
 
   var BAR_COUNT = 64;
   var smoothed = new Float32Array(BAR_COUNT);
