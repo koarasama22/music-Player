@@ -304,7 +304,7 @@
 </main>
 
 <!-- TODO: replace this href with the actual destination URL -->
-<a id="download-audio-btn" class="download-fab" href="https://example.com/" target="_blank" rel="noopener noreferrer">⬇ 音源をダウンロード</a>
+<a id="download-audio-btn" class="download-fab" href="https://img.skin/383x215/ffffff/000000?text=%E3%81%9F%E3%81%A0%E3%81%84%E3%81%BE%E3%80%81%E3%81%93%E3%81%AE%E3%82%B5%E3%83%BC%E3%83%93%E3%82%B9%E3%81%AF%E3%81%94%E5%88%A9%E7%94%A8%E3%81%84%E3%81%9F%E3%81%A0%E3%81%91%E3%81%BE%E3%81%9B%E3%82%93">⬇ 音源をダウンロード</a>
 
 <audio id="audio" preload="metadata"></audio>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -1086,9 +1086,8 @@
     var grad = ctx2d.createLinearGradient(0, H, 0, 0);
     grad.addColorStop(0, '#4fd1c5'); grad.addColorStop(0.6, '#7f9cf5'); grad.addColorStop(1, '#f687b3');
     ctx2d.fillStyle = grad;
-    // Symmetric attack/release easing (framerate-independent) for a fluid, non-jittery motion.
-    var attackRate = 1 - Math.pow(0.001, dt);   // fast rise
-    var releaseRate = 1 - Math.pow(0.06, dt);   // gentle fall
+    var attackRate = 1 - Math.pow(0.001, dt);
+    var releaseRate = 1 - Math.pow(0.06, dt);
     for (var i = 0; i < BAR_COUNT; i++) {
       var v = 0;
       if (active && usable) {
